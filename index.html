@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Forge of Database</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.85) 100%),
+        url('home.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: #fdf5e6;
+    }
+
+    .logo {
+      display: block;
+      margin: 60px auto 25px auto;
+      max-width: 420px;
+      filter: drop-shadow(0px 0px 16px rgba(0,0,0,0.85));
+      transition: 0.3s;
+    }
+    .logo:hover {
+      transform: scale(1.04);
+    }
+
+    .topbar {
+      width: 100%;
+      background: linear-gradient(90deg, rgba(10, 6, 4, 0.95), rgba(70, 45, 25, 0.95));
+      padding: 10px 18px;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      box-sizing: border-box;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 999;
+      box-shadow: 0 0 16px rgba(0,0,0,0.9);
+      backdrop-filter: blur(8px);
+    }
+
+    .topbar input {
+      padding: 8px 12px;
+      border-radius: 18px;
+      border: 1px solid rgba(255, 223, 186, 0.5);
+      outline: none;
+      background: rgba(25, 17, 11, 0.9);
+      color: #f7e0c3;
+      font-size: 13px;
+      transition: 0.2s;
+    }
+    .topbar input::placeholder {
+      color: rgba(247, 224, 195, 0.65);
+    }
+    .topbar input:focus {
+      border-color: #ffcf7a;
+      box-shadow: 0 0 8px rgba(255, 207, 122, 0.7);
+    }
+
+    .topbar button {
+      padding: 8px 18px;
+      border: none;
+      border-radius: 20px;
+      background: radial-gradient(circle at 30% 0, #ffe6b8 0, #d4a373 40%, #8a5a2b 100%);
+      color: #2b1709;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 13px;
+      letter-spacing: 0.5px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.8);
+      transition: 0.2s;
+    }
+    .topbar button:hover {
+      filter: brightness(1.05);
+      transform: translateY(-1px);
+      box-shadow: 0 0 14px rgba(0,0,0,0.9);
+    }
+
+    .top-space {
+      height: 80px;
+    }
+
+    .box {
+      background: radial-gradient(circle at top left, rgba(110, 70, 40, 0.4), rgba(25, 15, 9, 0.96));
+      backdrop-filter: blur(6px);
+      width: 92%;
+      max-width: 1600px;
+      margin: 0 auto 40px auto;
+      padding: 32px 34px 40px 34px;
+      border-radius: 18px;
+      box-shadow: 0 0 45px rgba(0,0,0,0.95);
+      border: 1px solid rgba(255, 222, 173, 0.25);
+    }
+
+    .box h1 {
+      margin: 0 0 18px 0;
+      font-size: 22px;
+      letter-spacing: 1px;
+      color: #ffe8c5;
+      text-shadow: 0 0 10px rgba(0,0,0,0.9);
+    }
+
+    .table-container {
+      overflow-x: auto;
+      border-radius: 14px;
+      box-shadow: 0 0 24px rgba(0,0,0,0.8);
+      border: 1px solid rgba(255, 235, 205, 0.25);
+      margin-bottom: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: linear-gradient(180deg, rgba(40, 25, 15, 0.96), rgba(20, 12, 7, 0.98));
+      color: #fdf5e6;
+    }
+
+    thead {
+      background: linear-gradient(180deg, rgba(90, 55, 30, 0.95), rgba(60, 37, 22, 0.98));
+    }
+
+    th, td {
+      padding: 12px 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.10);
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    th {
+      font-size: 14px;
+      letter-spacing: 0.6px;
+      text-shadow: 0 0 7px rgba(0,0,0,0.9);
+      position: relative;
+    }
+
+    th button {
+      background: none;
+      border: none;
+      color: #ffddaa;
+      font-size: 15px;
+      cursor: pointer;
+      margin-left: 6px;
+      transition: 0.2s;
+    }
+    th button:hover {
+      color: #fff4d6;
+      transform: translateY(-1px);
+      text-shadow: 0 0 8px rgba(255, 223, 186, 0.9);
+    }
+
+    th img {
+      vertical-align: middle;
+      filter: drop-shadow(0 0 6px rgba(0,0,0,0.8));
+      transition: 0.2s;
+    }
+
+    th img:hover {
+      transform: scale(1.1);
+      filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.8));
+    }
+
+    tbody tr:nth-child(even) {
+      background: rgba(255,255,255,0.02);
+    }
+
+    tr:hover {
+      background: radial-gradient(circle at center, rgba(255, 228, 196, 0.12), rgba(10, 6, 4, 0.98));
+    }
+
+    td {
+      color: #f7e1c4;
+      text-shadow: 0 0 3px rgba(0,0,0,0.7);
+    }
+
+    .image-cell {
+      width: 90px;
+      height: 90px;
+      background: radial-gradient(circle at 30% 0, #7a5735 0, #513624 50%, #2f1f14 100%);
+      border-radius: 12px;
+      box-shadow: inset 0 0 10px rgba(0,0,0,0.7), 0 0 8px rgba(0,0,0,0.8);
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .image-cell:hover {
+      transform: scale(1.05);
+      box-shadow: inset 0 0 10px rgba(0,0,0,0.7), 0 0 12px rgba(255, 215, 0, 0.4);
+    }
+
+    .image-cell input[type="file"] {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+      z-index: 2;
+    }
+
+    .image-cell::before {
+      content: '📷';
+      font-size: 24px;
+      opacity: 0.7;
+      transition: 0.2s;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .image-cell:hover::before {
+      opacity: 1;
+      transform: scale(1.1);
+    }
+
+    .image-cell img {
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: cover !important;
+      object-position: center;
+      border-radius: 12px;
+      z-index: 3;
+      display: block;
+    }
+
+    .image-cell.has-image::before {
+      opacity: 0;
+    }
+
+    .add-row-btn {
+      background: radial-gradient(circle at 30% 0, #ffe6b8 0, #d4a373 40%, #8a5a2b 100%);
+      color: #2b1709;
+      border: none;
+      border-radius: 10px;
+      padding: 8px 16px;
+      font-weight: bold;
+      font-size: 12px;
+      cursor: pointer;
+      transition: 0.2s;
+      margin: 10px auto;
+      display: block;
+    }
+    .add-row-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+    }
+
+    .add-row-btn:disabled {
+      background: rgba(120, 80, 50, 0.5);
+      color: #666;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.9);
+      backdrop-filter: blur(10px);
+    }
+
+    .modal-content {
+      background: linear-gradient(135deg, rgba(70, 45, 25, 0.98), rgba(40, 25, 15, 0.98));
+      margin: 5% auto;
+      padding: 30px;
+      border-radius: 20px;
+      width: 90%;
+      max-width: 600px;
+      border: 2px solid rgba(255, 223, 186, 0.4);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.9);
+    }
+
+    .modal h3 {
+      color: #ffe8c5;
+      margin: 0 0 25px 0;
+      text-align: center;
+      font-size: 20px;
+    }
+
+    .modal-inputs {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .modal-inputs input {
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 223, 186, 0.4);
+      background: rgba(25, 17, 11, 0.9);
+      color: #f7e0c3;
+      font-size: 14px;
+    }
+
+    .modal-inputs input::placeholder {
+      color: rgba(247, 224, 195, 0.6);
+    }
+
+    .modal-buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+    }
+
+    .btn-save, .btn-cancel {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      border-radius: 14px;
+      font-weight: bold;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    .btn-save {
+      background: radial-gradient(circle at 30% 0, #ffe6b8 0, #d4a373 40%, #8a5a2b 100%);
+      color: #2b1709;
+    }
+
+    .btn-cancel {
+      background: rgba(120, 80, 50, 0.7);
+      color: #ffdd88;
+    }
+
+    .no-data {
+      text-align: center;
+      padding: 40px;
+      color: #ffdd88;
+      font-size: 16px;
+    }
+
+    .nome-link {
+      color: #ffdd88 !important;
+      text-decoration: none;
+      font-weight: bold;
+      transition: 0.2s;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 6px;
+      display: inline-block;
+    }
+
+    .nome-link:hover {
+      color: #fff4d6 !important;
+      text-shadow: 0 0 8px rgba(255, 223, 186, 0.9);
+      background: rgba(255, 221, 136, 0.3);
+      transform: translateY(-1px);
+    }
+
+    @media (max-width: 900px) {
+      .modal-inputs {
+        grid-template-columns: 1fr 1fr;
+      }
+      .image-cell {
+        width: 70px;
+        height: 70px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <input type="text" id="loginInput" placeholder="Login">
+    <input type="password" id="senhaInput" placeholder="Senha">
+    <button onclick="fazerLogin()">🔓 Entrar</button>
+  </div>
+
+  <div class="top-space"></div>
+
+  <a href="/"><img src="forge_of_database.png" alt="Forge of Database" class="logo" /></a>
+
+  <div class="box">
+    <h1>Banco de Dados de Edifícios</h1>
+
+    <button class="add-row-btn" onclick="abrirModalAdicionar()" id="addRowBtn" style="display: none;">
+      ➕ Adicionar Nova Linha
+    </button>
+
+    <div class="table-container" id="tableContainer">
+      <table id="dataTable">
+        <thead>
+          <tr>
+            <th>Imagem</th>
+            <th>
+              Nome
+              <button onclick="sortTable(1)">↕</button>
+            </th>
+            <th style="text-align:center;">
+              <img src="ponto_forge.png" alt="" style="height:26px;" title="Ponto Forge">
+              <button onclick="sortTable(2)">↕</button>
+            </th>
+            <th style="text-align:center;">
+              <img src="medalhas.png" alt="" style="height:26px;" title="Medalhas">
+              <button onclick="sortTable(3)">↕</button>
+            </th>
+            <th style="text-align:center;">
+              <img src="população.png" alt="" style="height:26px;" title="População">
+              <button onclick="sortTable(4)">↕</button>
+            </th>
+            <th style="text-align:center;">
+              <img src="moedas.png" alt="" style="height:26px;" title="Moedas">
+              <button onclick="sortTable(5)">↕</button>
+            </th>
+            <th style="text-align:center;">
+              <img src="mantimentos.png" alt="" style="height:26px;" title="Mantimentos">
+              <button onclick="sortTable(6)">↕</button>
+            </th>
+            <th style="text-align:center;">
+              <img src="ataque_vermelho.png" alt="" style="height:26px;" title="Ataque Vermelho">
+              <button onclick="sortTable(7)">↕</button>
+            </th>
+            <th style="text-align:center;">
+              <img src="defesa_vermelha.png" alt="" style="height:26px;" title="Defesa Vermelha">
+              <button onclick="sortTable(8)">↕</button>
+            </th>
+            <th style="text-align:center;">
+              <img src="ataque_azul.png" alt="" style="height:26px;" title="Ataque Azul">
+              <button onclick="sortTable(9)">↕</button>
+            </th>
+            <th style="text-align:center;">
+              <img src="defesa_azul.png" alt="" style="height:26px;" title="Defesa Azul">
+              <button onclick="sortTable(10)">↕</button>
+            </th>
+            <th style="text-align:center;">
+              <img src="mercadorias.png" alt="" style="height:26px;" title="Mercadorias">
+              <button onclick="sortTable(11)">↕</button>
+            </th>
+            <th style="text-align:center;">
+              <img src="tamanho.png" alt="" style="height:26px;" title="Tamanho">
+              <button onclick="sortTable(12)">↕</button>
+            </th>
+            <th style="text-align:center;">
+              <img src="diamantes.png" alt="" style="height:26px;" title="Diamantes">
+              <button onclick="sortTable(13)">↕</button>
+            </th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+    </div>
+
+    <div id="statusMsg" style="text-align: center; color: #ffdd88; margin-top: 15px;"></div>
+  </div>
+
+  <!-- MODAL PARA PREENCHER DADOS -->
+  <div id="addModal" class="modal">
+    <div class="modal-content">
+      <h3>Preencha os Dados do Edifício</h3>
+      <div class="modal-inputs">
+        <input type="text" id="modalNome" placeholder="Nome do Edifício *">
+        <input type="number" id="modalPonto" placeholder="Ponto" min="0">
+        <input type="number" id="modalMedalhas" placeholder="Medalhas" min="0">
+        <input type="number" id="modalPopulacao" placeholder="População" min="0">
+        <input type="number" id="modalMoedas" placeholder="Moedas" min="0">
+        <input type="number" id="modalMantimentos" placeholder="Mantimentos" min="0">
+        <input type="number" id="modalAtaqueV" placeholder="Ataque Vermelho" min="0">
+        <input type="number" id="modalDefesaV" placeholder="Defesa Vermelha" min="0">
+        <input type="number" id="modalAtaqueA" placeholder="Ataque Azul" min="0">
+        <input type="number" id="modalDefesaA" placeholder="Defesa Azul" min="0">
+        <input type="number" id="modalMercadorias" placeholder="Mercadorias" min="0">
+        <input type="number" id="modalTamanho" placeholder="Tamanho" min="0">
+        <input type="number" id="modalDiamantes" placeholder="Diamantes" min="0">
+      </div>
+      <div class="modal-buttons">
+        <button class="btn-save" onclick="salvarNovoEdificio()">Salvar ➕</button>
+        <button class="btn-cancel" onclick="fecharModal()">Cancelar ✕</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let loggedIn = false;
+    let data = [];
+    let sortDirections = {};
+    let imageFiles = {};
+
+    async function carregarDados() {
+      try {
+        const response = await fetch('edificios.csv');
+        const csvText = await response.text();
+        const linhas = csvText.split('\n').slice(1);
+        
+        data = linhas
+          .filter(linha => linha.trim())
+          .map(linha => {
+            const cols = linha.split(',');
+            return {
+              nome: cols[0]?.replace(/"/g, '') || '',
+              ponto: parseInt(cols[1]?.replace(/"/g, '') || 0),
+              medalhas: parseInt(cols[2]?.replace(/"/g, '') || 0),
+              populacao: parseInt(cols[3]?.replace(/"/g, '') || 0),
+              moedas: parseInt(cols[4]?.replace(/"/g, '') || 0),
+              mantimentos: parseInt(cols[5]?.replace(/"/g, '') || 0),
+              ataqueV: parseInt(cols[6]?.replace(/"/g, '') || 0),
+              defesaV: parseInt(cols[7]?.replace(/"/g, '') || 0),
+              ataqueA: parseInt(cols[8]?.replace(/"/g, '') || 0),
+              defesaA: parseInt(cols[9]?.replace(/"/g, '') || 0),
+              mercadorias: parseInt(cols[10]?.replace(/"/g, '') || 0),
+              tamanho: parseInt(cols[11]?.replace(/"/g, '') || 0),
+              diamantes: parseInt(cols[12]?.replace(/"/g, '') || 0
+            };
+          });
+        
+        atualizarTabela();
+        if (data.length === 0) {
+          document.getElementById('statusMsg').innerText = 'Nenhum edifício cadastrado. Faça login para adicionar!';
+        }
+      } catch (error) {
+        document.getElementById('tableBody').innerHTML = '<tr><td colspan="14" class="no-data">Nenhum dado encontrado. Faça login para adicionar!</td></tr>';
+      }
+    }
+
+    function sortTable(n) {
+      let dir = sortDirections[n] === "asc" ? "desc" : "asc";
+      sortDirections[n] = dir;
+
+      data.sort((a, b) => {
+        let aText, bText;
+        
+        switch(n) {
+          case 1: aText = a.nome; bText = b.nome; break;
+          case 2: aText = a.ponto; bText = b.ponto; break;
+          case 3: aText = a.medalhas; bText = b.medalhas; break;
+          case 4: aText = a.populacao; bText = b.populacao; break;
+          case 5: aText = a.moedas; bText = b.moedas; break;
+          case 6: aText = a.mantimentos; bText = b.mantimentos; break;
+          case 7: aText = a.ataqueV; bText = b.ataqueV; break;
+          case 8: aText = a.defesaV; bText = b.defesaV; break;
+          case 9: aText = a.ataqueA; bText = b.ataqueA; break;
+          case 10: aText = a.defesaA; bText = b.defesaA; break;
+          case 11: aText = a.mercadorias; bText = b.mercadorias; break;
+          case 12: aText = a.tamanho; bText = b.tamanho; break;
+          case 13: aText = a.diamantes; bText = b.diamantes; break;
+          default: return 0;
+        }
+
+        if (typeof aText === 'string') {
+          aText = aText.toLowerCase();
+          bText = bText.toLowerCase();
+        }
+
+        if (dir === "asc") {
+          return aText > bText ? 1 : aText < bText ? -1 : 0;
+        } else {
+          return aText < bText ? 1 : aText > bText ? -1 : 0;
+        }
+      });
+
+      atualizarTabela();
+    }
+
+    function atualizarTabela() {
+      const tbody = document.getElementById('tableBody');
+      tbody.innerHTML = '';
+      
+      data.forEach((edificio, index) => {
+        const tr = document.createElement('tr');
+        
+        const imageCell = document.createElement('td');
+        imageCell.className = `image-cell ${imageFiles[index] ? 'has-image' : ''}`;
+        
+        const nomeParaTooltip = edificio.nome || `Edifício ${index + 1}`;
+        
+        imageCell.innerHTML = `
+          <input type="file" accept="image/*" onchange="previewImage(event, ${index})">
+          ${imageFiles[index] ? `<img src="${imageFiles[index]}" alt="${nomeParaTooltip}" title="${nomeParaTooltip}">` : ''}
+        `;
+        
+        const nomeUrl = encodeURIComponent(edificio.nome.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''));
+        const nomeLink = edificio.nome ? 
+          `<a href="edificio.html?nome=${nomeUrl}" 
+             target="_blank"
+             class="nome-link" 
+             title="Abrir detalhes de ${nomeParaTooltip} em nova aba 🆕">
+             ${edificio.nome}
+           </a>` : 
+          `<span title="${nomeParaTooltip}">${edificio.nome || ''}</span>`;
+        
+        tr.innerHTML = `
+          ${imageCell.outerHTML}
+          <td>${nomeLink}</td>
+          <td>${edificio.ponto || 0}</td>
+          <td>${edificio.medalhas || 0}</td>
+          <td>${edificio.populacao || 0}</td>
+          <td>${edificio.moedas || 0}</td>
+          <td>${edificio.mantimentos || 0}</td>
+          <td>${edificio.ataqueV || 0}</td>
+          <td>${edificio.defesaV || 0}</td>
+          <td>${edificio.ataqueA || 0}</td>
+          <td>${edificio.defesaA || 0}</td>
+          <td>${edificio.mercadorias || 0}</td>
+          <td>${edificio.tamanho || 0}</td>
+          <td>${edificio.diamantes || 0}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function previewImage(event, rowIndex) {
+      if (!loggedIn) {
+        alert('❌ Faça login primeiro!');
+        event.target.value = '';
+        return;
+      }
+      
+      const file = event.target.files[0];
+      if (file && file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          imageFiles[rowIndex] = e.target.result;
+          atualizarTabela();
+          document.getElementById('statusMsg').innerText = '✅ Imagem ajustada perfeitamente ao quadrado!';
+        };
+        reader.readAsDataURL(file);
+      } else {
+        alert('Por favor, selecione uma imagem válida!');
+        event.target.value = '';
+      }
+    }
+
+    function fazerLogin() {
+      const login = document.getElementById('loginInput').value.trim();
+      const senha = document.getElementById('senhaInput').value;
+      
+      // SEM NENHUMA VALIDAÇÃO - apenas limpa os campos e avisa
+      if (login && senha) {
+        alert('❌ Credenciais inválidas. Contate o administrador para acesso!');
+        document.getElementById('loginInput').value = '';
+        document.getElementById('senhaInput').value = '';
+      } else {
+        alert('❌ Preencha login E senha!');
+      }
+    }
+
+    function abrirModalAdicionar() {
+      if (!loggedIn) {
+        alert('❌ Você precisa de credenciais válidas para acessar esta função!');
+        return;
+      }
+      document.getElementById('addModal').style.display = 'block';
+      document.querySelectorAll('.modal-inputs input').forEach(input => input.value = '');
+    }
+
+    function fecharModal() {
+      document.getElementById('addModal').style.display = 'none';
+    }
+
+    function salvarNovoEdificio() {
+      const nome = document.getElementById('modalNome').value.trim();
+      if (!nome) {
+        alert('Nome do edifício é obrigatório!');
+        return;
+      }
+
+      const novoEdificio = {
+        nome: nome,
+        ponto: parseInt(document.getElementById('modalPonto').value) || 0,
+        medalhas: parseInt(document.getElementById('modalMedalhas').value) || 0,
+        populacao: parseInt(document.getElementById('modalPopulacao').value) || 0,
+        moedas: parseInt(document.getElementById('modalMoedas').value) || 0,
+        mantimentos: parseInt(document.getElementById('modalMantimentos').value) || 0,
+        ataqueV: parseInt(document.getElementById('modalAtaqueV').value) || 0,
+        defesaV: parseInt(document.getElementById('modalDefesaV').value) || 0,
+        ataqueA: parseInt(document.getElementById('modalAtaqueA').value) || 0,
+        defesaA: parseInt(document.getElementById('modalDefesaA').value) || 0,
+        mercadorias: parseInt(document.getElementById('modalMercadorias').value) || 0,
+        tamanho: parseInt(document.getElementById('modalTamanho').value) || 0,
+        diamantes: parseInt(document.getElementById('modalDiamantes').value) || 0
+      };
+
+      data.push(novoEdificio);
+      atualizarTabela();
+      fecharModal();
+      salvarCSV();
+      document.getElementById('statusMsg').innerText = `✅ "${novoEdificio.nome}" adicionado com sucesso!`;
+    }
+
+    function salvarCSV() {
+      const csvContent = 'Nome,Ponto,Medalhas,Populacao,Moedas,Mantimentos,AtaqueVermelho,DefesaVermelha,AtaqueAzul,DefesaAzul,Mercadorias,Tamanho,Diamantes\n' +
+        data.map(e => 
+          [e.nome, e.ponto, e.medalhas, e.populacao, e.moedas, e.mantimentos, e.ataqueV, e.defesaV, e.ataqueA, e.defesaA, e.mercadorias, e.tamanho, e.diamantes]
+            .map(v => `"${v}"`).join(',')
+        ).join('\n');
+
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'edificios.csv';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    window.onclick = function(event) {
+      const modal = document.getElementById('addModal');
+      if (event.target == modal) {
+        fecharModal();
+      }
+    }
+
+    // Inicialização - bloqueado até login
+    document.getElementById('tableBody').innerHTML = '<tr><td colspan="14" class="no-data">🔒 ACESSO RESTRITO - Insira suas credenciais no topo para continuar</td></tr>';
+    document.getElementById('statusMsg').innerText = '💡 Contate o administrador para obter login e senha válidos';
+  </script>
+</body>
+</html>
